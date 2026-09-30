@@ -1,6 +1,9 @@
 import os
 # hugging face镜像设置，如果国内环境无法使用启用该设置
-# os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
+os.environ.setdefault('HF_ENDPOINT', 'https://hf-mirror.com')
+# 若系统代理访问不了 hugging face，让相关请求绕过代理直连
+os.environ.setdefault('NO_PROXY', 'hf-mirror.com,huggingface.co')
+os.environ.setdefault('no_proxy', 'hf-mirror.com,huggingface.co')
 from dotenv import load_dotenv
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -49,11 +52,11 @@ prompt = ChatPromptTemplate.from_template("""请根据下面提供的上下文�
 
 # 使用 AIHubmix
 llm = ChatOpenAI(
-    model="glm-4.7-flash-free",
+    model="deepseek-flash",
     temperature=0.7,
     max_tokens=4096,
-    api_key=os.getenv("DEEPSEEK_API_KEY"),
-    base_url="https://aihubmix.com/v1"
+    api_key=os.getenv("CHAT_DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com"
 )
 
 # llm = ChatOpenAI(
